@@ -19,6 +19,17 @@ class MoviesController < ApplicationController
     else
       @movies = Movie.all
     end
+    
+    @all_ratings = Movie.ratings
+    if params[:ratings]
+      session[:ratings] = params[:ratings]
+      @selected_retings = session[:ratings].keys
+    elsif session[:ratings]
+      @selected_retings = session[:ratings].keys
+    else
+      @selected_retings = @all_ratings
+    end
+    @movies =  @movies.where(:rating => @selected_retings)
   end
 
   def new
